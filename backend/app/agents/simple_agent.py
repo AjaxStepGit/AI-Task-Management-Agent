@@ -37,6 +37,8 @@ class SimpleTaskAgent:
                     title, description = self._extract_task_title_and_description(user_input)
                     priority = self._extract_priority(user_input)
                     due_date = self._extract_due_date(user_input)
+                    
+                    print(f"DEBUG: Extracted title='{title}', description='{description}'")
 
                     if title:
                         task_data = TaskCreate(
@@ -48,7 +50,10 @@ class SimpleTaskAgent:
                         task = await task_service.create_task(task_data)
                         tasks_affected = [task.to_dict()]
                         action_type = "Create Task"
-                        response_text = f"Perfect! I've created the task '{title}' for you. It's now in your task list!"
+                        if description:
+                            response_text = f"Perfect! I've created the task '{title}' with description '{description}' for you. It's now in your task list!"
+                        else:
+                            response_text = f"Perfect! I've created the task '{title}' for you. It's now in your task list!"
                     else:
                         response_text = "I'd be happy to create a task for you! Could you tell me what you'd like to add?"
 
@@ -138,30 +143,86 @@ Keep responses friendly and concise."""
                 "action_type": "error"
             }
 
+    def _extract_task_title_and_description(self, text: str) -> tuple[str, str]:
+        """Extract task title and description from user input"""
+        text = text.strip()
+        
+        # Pattern 1: title | description
+        if " | " in text:
+            parts = text.split(" | ", 1)
+            if len(parts) >= 2:
+                title_part = parts[0].strip()
+                description = parts[1].strip()
+                
+                # Clean title from task creation keywords
+                title_patterns = [
+                    r"create (?:a )?task (?:to |called |named )?(.+)",
+                    r"add (?:a )?task (?:to |called |named )?(.+)",
+                    r"new task:? (.+)",
+                ]
+                
+                for pattern in title_patterns:
+                    match = re.search(pattern, title_part, re.IGNORECASE)
+                    if match:
+                        return match.group(1).strip(), description
+                
+                return title_part, description
+        
+        # Pattern 2: Handle specific format "Create a task to X, it have chapters so add Y"
+        specific_pattern = r"create (?:a )?task to (.+?),?\s*(?:\.?\s*)?it have? (?:different )?chapters?\s*so add (.+?)(?:\s*so add this task)?$"
+        match = re.search(specific_pattern, text, re.IGNORECASE)
+        if match:
+            title = match.group(1).strip()
+            description = match.group(2).strip()
+            return title, description
+            
+        # Pattern 3: Look for "so add" patterns more generally
+        if "so add" in text.lower():
+            # Find the first "so add" and split there
+            parts = re.split(r'\s*(?:,\s*)?(?:so add|add)\s*', text, maxsplit=1, flags=re.IGNORECASE)
+            if len(parts) >= 2:
+                # Extract title from first part
+                title_part = parts[0].strip()
+                description = parts[1].strip()
+                
+                # Clean up description
+                description = re.sub(r'\s*so add this task$', '', description, flags=re.IGNORECASE)
+                
+                # Extract clean title
+                title_patterns = [
+                    r"create (?:a )?task (?:to )?(.+?)(?:,\s*it have?|$)",
+                    r"add (?:a )?task (?:to )?(.+?)(?:,\s*it have?|$)",
+                ]
+                
+                for pattern in title_patterns:
+                    title_match = re.search(pattern, title_part, re.IGNORECASE)
+                    if title_match:
+                        return title_match.group(1).strip(), description
+                        
+                return title_part, description
+        
+        # Fall back to extracting just title
+        title = self._extract_task_title(text)
+        return title, None
+    
     def _extract_task_title(self, text: str) -> str:
         """Extract task title from user input"""
         text_lower = text.lower()
         
         # Common patterns for task creation
         patterns = [
-            r"add (?:a )?task (?:to |called )?(?:'([^']+)'|(.+))",
-            r"create (?:a )?task (?:to |for |called )?(?:'([^']+)'|(.+))",
+            r"create (?:a )?task (?:to |called |named )?(.+)",
+            r"add (?:a )?task (?:to |called |named )?(.+)",
             r"remind me to (.+)",
             r"new task:? (.+)",
             r"task:? (.+)",
             r"i need to (.+)",
-            r"(?:create|add|make|build) (?:a )?task (.+)",
-            r"create a task to (.+)",
         ]
         
         for pattern in patterns:
             match = re.search(pattern, text_lower)
             if match:
-                # Handle cases where we have multiple capture groups (quoted vs unquoted)
-                groups = match.groups()
-                for group in groups:
-                    if group and group.strip():
-                        return group.strip()
+                return match.group(1).strip()
         
         return ""
 

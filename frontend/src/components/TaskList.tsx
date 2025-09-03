@@ -96,14 +96,14 @@ export default function TaskList({ refreshTrigger, onTaskUpdate }: TaskListProps
   const getPriorityColor = (priority: string) => {
     switch (priority) {
       case 'urgent':
-        return 'bg-red-100 text-red-800 border-red-200';
+        return 'bg-red-100 dark:bg-red-900 text-red-800 dark:text-red-200 border-red-200 dark:border-red-700';
       case 'high':
-        return 'bg-orange-100 text-orange-800 border-orange-200';
+        return 'bg-orange-100 dark:bg-orange-900 text-orange-800 dark:text-orange-200 border-orange-200 dark:border-orange-700';
       case 'medium':
-        return 'bg-blue-100 text-blue-800 border-blue-200';
+        return 'bg-blue-100 dark:bg-blue-900 text-blue-800 dark:text-blue-200 border-blue-200 dark:border-blue-700';
       case 'low':
       default:
-        return 'bg-gray-100 text-gray-800 border-gray-200';
+        return 'bg-gray-100 dark:bg-gray-700 text-gray-800 dark:text-gray-200 border-gray-200 dark:border-gray-600';
     }
   };
 
@@ -139,22 +139,22 @@ export default function TaskList({ refreshTrigger, onTaskUpdate }: TaskListProps
 
   if (loading) {
     return (
-      <div className="flex flex-col h-full bg-white">
-        <div className="p-4 border-b border-gray-200 bg-gray-50">
-          <h2 className="text-lg font-semibold text-gray-800">Tasks</h2>
+      <div className="flex flex-col h-full bg-white dark:bg-gray-800 transition-colors">
+        <div className="p-4 border-b border-gray-200 dark:border-gray-700 bg-gray-50 dark:bg-gray-900 transition-colors">
+          <h2 className="text-lg font-semibold text-gray-800 dark:text-gray-200">Tasks</h2>
         </div>
         <div className="flex-1 flex items-center justify-center">
-          <div className="text-gray-500">Loading tasks...</div>
+          <div className="text-gray-500 dark:text-gray-400">Loading tasks...</div>
         </div>
       </div>
     );
   }
 
   return (
-    <div className="flex flex-col h-full bg-white">
+    <div className="flex flex-col h-full bg-white dark:bg-gray-800 transition-colors">
       {/* Header */}
-      <div className="p-4 border-b border-gray-200 bg-gray-50">
-        <h2 className="text-lg font-semibold text-gray-800 mb-2">
+      <div className="p-4 border-b border-gray-200 dark:border-gray-700 bg-gray-50 dark:bg-gray-900 transition-colors">
+        <h2 className="text-lg font-semibold text-gray-800 dark:text-gray-200 mb-2">
           Tasks ({filteredTasks.length})
         </h2>
         
@@ -163,7 +163,7 @@ export default function TaskList({ refreshTrigger, onTaskUpdate }: TaskListProps
           <select
             value={filter.status || ''}
             onChange={(e) => setFilter(prev => ({ ...prev, status: e.target.value || undefined }))}
-            className="px-2 py-1 border border-gray-300 rounded text-xs bg-white text-gray-900 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-blue-500"
+            className="px-2 py-1 border border-gray-300 dark:border-gray-600 rounded text-xs bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100 hover:bg-gray-50 dark:hover:bg-gray-600 focus:outline-none focus:ring-2 focus:ring-blue-500 transition-colors"
           >
             <option value="">All Status</option>
             <option value="pending">Pending</option>
@@ -174,7 +174,7 @@ export default function TaskList({ refreshTrigger, onTaskUpdate }: TaskListProps
           <select
             value={filter.priority || ''}
             onChange={(e) => setFilter(prev => ({ ...prev, priority: e.target.value || undefined }))}
-            className="px-2 py-1 border border-gray-300 rounded text-xs bg-white text-gray-900 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-blue-500"
+            className="px-2 py-1 border border-gray-300 dark:border-gray-600 rounded text-xs bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100 hover:bg-gray-50 dark:hover:bg-gray-600 focus:outline-none focus:ring-2 focus:ring-blue-500 transition-colors"
           >
             <option value="">All Priority</option>
             <option value="low">Low</option>
@@ -188,7 +188,7 @@ export default function TaskList({ refreshTrigger, onTaskUpdate }: TaskListProps
             placeholder="Search..."
             value={filter.search || ''}
             onChange={(e) => setFilter(prev => ({ ...prev, search: e.target.value || undefined }))}
-            className="px-2 py-1 border border-gray-300 rounded text-xs flex-1 min-w-0 bg-white text-gray-900 placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-blue-500"
+            className="px-2 py-1 border border-gray-300 dark:border-gray-600 rounded text-xs flex-1 min-w-0 bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100 placeholder-gray-500 dark:placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 transition-colors"
           />
           
           <motion.button

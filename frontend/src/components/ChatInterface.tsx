@@ -97,11 +97,11 @@ export default function ChatInterface({ onTasksUpdate }: ChatInterfaceProps) {
   };
 
   return (
-    <div className="flex flex-col h-full bg-white border-r border-gray-200">
+    <div className="flex flex-col h-full bg-white dark:bg-gray-800 border-r border-gray-200 dark:border-gray-700 transition-colors">
       {/* Header */}
-      <div className="p-4 border-b border-gray-200 bg-gray-50">
-        <h2 className="text-lg font-semibold text-gray-800">AI Task Assistant</h2>
-        <p className="text-sm text-gray-600">Ask me to manage your tasks!</p>
+      <div className="p-4 border-b border-gray-200 dark:border-gray-700 bg-gray-50 dark:bg-gray-900 transition-colors">
+        <h2 className="text-lg font-semibold text-gray-800 dark:text-gray-200">AI Task Assistant</h2>
+        <p className="text-sm text-gray-600 dark:text-gray-400">Ask me to manage your tasks!</p>
       </div>
 
       {/* Messages */}
@@ -126,8 +126,8 @@ export default function ChatInterface({ onTasksUpdate }: ChatInterfaceProps) {
                 whileHover={{ scale: 1.02 }}
                 className={`max-w-[70%] rounded-lg px-4 py-2 shadow-sm ${
                   message.role === 'user'
-                    ? 'bg-gradient-to-r from-blue-500 to-blue-600 text-white'
-                    : 'bg-white text-gray-800 border border-gray-200'
+                    ? 'bg-gradient-to-r from-blue-500 to-blue-600 text-white dark:from-blue-600 dark:to-blue-700'
+                    : 'bg-white dark:bg-gray-700 text-gray-800 dark:text-gray-200 border border-gray-200 dark:border-gray-600'
                 }`}
               >
               <div className="text-sm">{message.content}</div>
@@ -159,7 +159,7 @@ export default function ChatInterface({ onTasksUpdate }: ChatInterfaceProps) {
               transition={{ duration: 0.2 }}
               className="flex justify-start"
             >
-              <div className="bg-white border border-gray-200 rounded-lg px-4 py-2 max-w-[70%] shadow-sm">
+              <div className="bg-white dark:bg-gray-700 border border-gray-200 dark:border-gray-600 rounded-lg px-4 py-2 max-w-[70%] shadow-sm transition-colors">
                 <div className="flex space-x-2">
                   <motion.div 
                     className="w-2 h-2 bg-blue-400 rounded-full"
@@ -208,7 +208,7 @@ export default function ChatInterface({ onTasksUpdate }: ChatInterfaceProps) {
       </div>
 
       {/* Input */}
-      <div className="p-4 border-t border-gray-200">
+      <div className="p-4 border-t border-gray-200 dark:border-gray-700 transition-colors">
         <div className="flex space-x-2">
           <textarea
             ref={textareaRef}
@@ -216,7 +216,7 @@ export default function ChatInterface({ onTasksUpdate }: ChatInterfaceProps) {
             onChange={(e) => setInputMessage(e.target.value)}
             onKeyPress={handleKeyPress}
             placeholder="Type a message... (e.g., 'Add a task to call mom tomorrow')"
-            className="flex-1 resize-none border border-gray-300 rounded-lg px-3 py-2 text-gray-900 bg-white placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+            className="flex-1 resize-none border border-gray-300 dark:border-gray-600 rounded-lg px-3 py-2 text-gray-900 dark:text-gray-100 bg-white dark:bg-gray-700 placeholder-gray-500 dark:placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-colors"
             rows={2}
             disabled={isLoading}
           />

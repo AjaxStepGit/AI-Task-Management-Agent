@@ -59,26 +59,26 @@ export default function ConfirmModal({
                 stiffness: 300,
                 damping: 30
               }}
-              className="bg-white rounded-lg shadow-2xl max-w-md w-full mx-4"
+              className="bg-white dark:bg-gray-800 rounded-lg shadow-2xl max-w-md w-full mx-4"
               onClick={(e) => e.stopPropagation()}
             >
               {/* Header */}
-              <div className="px-6 py-4 border-b border-gray-200">
-                <h3 className="text-lg font-semibold text-gray-900">{title}</h3>
+              <div className="px-6 py-4 border-b border-gray-200 dark:border-gray-600">
+                <h3 className="text-lg font-semibold text-gray-900 dark:text-gray-100">{title}</h3>
               </div>
 
               {/* Content */}
               <div className="px-6 py-4">
-                <p className="text-gray-600">{message}</p>
+                <p className="text-gray-600 dark:text-gray-300">{message}</p>
               </div>
 
               {/* Actions */}
-              <div className="px-6 py-4 bg-gray-50 rounded-b-lg flex justify-end gap-3">
+              <div className="px-6 py-4 bg-gray-50 dark:bg-gray-700 rounded-b-lg flex justify-end gap-3">
                 <motion.button
                   whileHover={{ scale: 1.02 }}
                   whileTap={{ scale: 0.98 }}
                   onClick={onClose}
-                  className="px-4 py-2 text-gray-700 bg-white border border-gray-300 rounded-md hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-gray-500 transition-colors"
+                  className="px-4 py-2 text-gray-700 dark:text-gray-300 bg-white dark:bg-gray-600 border border-gray-300 dark:border-gray-500 rounded-md hover:bg-gray-50 dark:hover:bg-gray-500 focus:outline-none focus:ring-2 focus:ring-gray-500 transition-colors"
                 >
                   {cancelText}
                 </motion.button>
